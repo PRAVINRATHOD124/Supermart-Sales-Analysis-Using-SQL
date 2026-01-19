@@ -3,22 +3,14 @@ USE Supermart;
 
 SELECT * FROM supermarts;
 
--- Q1. Display all records from the table.
-SELECT * FROM supermarts;
 
-
--- Find all orders where Sales is greater than 1000.
-SELECT Customer_Name
-FROM supermarts
-WHERE Sales > 1000;
-
--- Find total sales by each Category.
+-- Q1. Find total sales by each Category.
 SELECT Category, SUM(Sales) as Total_Sales
 FROM supermarts 
 group by Category;
 
 
--- Find the top-selling category in each region.
+-- Q2. Find the top-selling category in each region.
 SELECT Region, Category, Total_Sales
 FROM (
     SELECT 
@@ -32,7 +24,7 @@ FROM (
 WHERE rnk = 1;
 
 
--- Find customers with the highest total profit.
+-- Q3. Find customers with the highest total profit.
 SELECT 
     Customer_Name,
     SUM(Profit) AS Total_Profit
@@ -41,7 +33,7 @@ GROUP BY Customer_Name
 ORDER BY Total_Profit DESC;
 
 
--- Identify loss-making categories.
+-- Q4. Identify loss-making categories.
 SELECT 
     Category,
     Customer_Name,
@@ -51,7 +43,7 @@ GROUP BY Category, Customer_Name
 HAVING SUM(Profit) < 0
 ORDER BY Total_Profit ASC;
 
--- Which category is most profitable?
+-- Q4. Which category is most profitable?
 SELECT 
     Category,
     SUM(Profit) AS Total_Profit
@@ -60,7 +52,7 @@ GROUP BY Category
 ORDER BY Total_Profit DESC
 LIMIT 1;
 
--- Which city has consistent high profits?
+-- Q5. Which city has consistent high profits?
 SELECT 
     City,
     SUM(Profit) AS Total_Profit
@@ -70,7 +62,7 @@ ORDER BY Total_Profit DESC
 LIMIT 1;
 
 
--- Which State has consistent high profits?
+-- Q6. Which State has consistent high profits?
 SELECT 
     State,
     SUM(Profit) AS Total_Profit
@@ -78,3 +70,19 @@ FROM supermarts
 GROUP BY State
 ORDER BY Total_Profit DESC
 LIMIT 1;
+
+-- Q7. Find customers who placed more than one order
+SELECT Customer_Name
+FROM supermarts
+GROUP BY Customer_Name
+HAVING COUNT(ï»¿OrderID) > 1;
+
+-- Q8. Get orders where discount is higher than average discount
+SELECT ï»¿OrderID, Discount
+FROM supermarts
+WHERE Discount > (
+    SELECT AVG(Discount)
+    FROM supermarts
+);
+
+
